@@ -54,7 +54,7 @@ This GitHub Action updates a GitHub user to a specified team in an organization 
        steps:
          - name: Update Member in Team
            id: update-member
-           uses: la-actions/update-member-in-team@v1
+           uses: lee-lott-actions/update-member-in-team@v1
            with:
              member-name: ${{ github.event.inputs.member-name }}
              team-name: ${{ github.event.inputs.team-name }}
