@@ -1,6 +1,6 @@
 name: Update Member in Team
 description: Updates a GitHub user in a specified team in an organization with a given role using the GitHub API.
-author: Louisiana Office of Technology Services
+author: Lee Lott
 
 inputs:
   member-name:
