@@ -33,7 +33,8 @@ runs:
   steps:
     - name: Update Member in Team
       id: action
+      shell: pwsh
       run: |
-        source ${{ github.action_path }}/action.sh
-        update_member_in_team "${{ inputs.member-name }}" "${{ inputs.team-name }}" "${{ inputs.role }}" "${{ inputs.token }}" "${{ inputs.owner }}"
-      shell: bash
+        source ${{ github.action_path }}/action.ps1
+        Update-TeamMember "${{ inputs.member-name }}" "${{ inputs.team-name }}" "${{ inputs.role }}" "${{ inputs.token }}" "${{ inputs.owner }}"
+      
