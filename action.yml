@@ -35,6 +35,6 @@ runs:
       id: action
       shell: pwsh
       run: |
-        source ${{ github.action_path }}/action.ps1
+        . "${{ github.action_path }}/action.ps1"
         Update-TeamMember "${{ inputs.member-name }}" "${{ inputs.team-name }}" "${{ inputs.role }}" "${{ inputs.token }}" "${{ inputs.owner }}"
       
