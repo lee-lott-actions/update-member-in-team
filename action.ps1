@@ -1,10 +1,10 @@
 function Update-TeamMember {
     param(
-        [Parameter(Mandatory = $true)][string]$MemberName,
-        [Parameter(Mandatory = $true)][string]$TeamName,
-        [Parameter(Mandatory = $true)][string]$Role,
-        [Parameter(Mandatory = $true)][string]$Token,
-        [Parameter(Mandatory = $true)][string]$Owner
+        [string]$MemberName,
+        [string]$TeamName,
+        [string]$Role,
+        [string]$Token,
+        [string]$Owner
     )
 
     # Validate required parameters
