@@ -6,7 +6,7 @@ Describe "Update-TeamMember" {
 		$script:Token        = "fake-token"
 		$script:Owner        = "test-owner"
 		$script:MockApiUrl   = "http://127.0.0.1:3000"
-        . "$PSScriptRoot/../Update-TeamMember.ps1"
+        . "$PSScriptRoot/../action.ps1"
     }
     BeforeEach {
         $env:GITHUB_OUTPUT = "$PSScriptRoot/github_output.temp"
