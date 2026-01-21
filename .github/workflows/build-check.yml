@@ -71,4 +71,3 @@ jobs:
             Write-Host "Test failed: ${{ steps.integration-tests.outputs.error-message }}"
             exit 1
           }
-
