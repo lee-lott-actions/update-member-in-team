@@ -87,4 +87,17 @@ Describe "Update-TeamMember" {
         $output | Should -Contain "result=failure"
         $output | Should -Contain "error-message=Missing required parameters: MemberName, TeamName, Role, Token, and Owner must be provided."
     }
+	
+	It "writes result=failure and error-message on exception" {
+		Mock Invoke-WebRequest { throw "API Error" }
+
+		try {
+			Update-TeamMember -MemberName $MemberName -TeamName $TeamName -Role $Role -Token $Token -Owner $Owner
+		} catch {}
+
+		$output = Get-Content $env:GITHUB_OUTPUT
+		$output | Should -Contain "result=failure"
+		$output | Where-Object { $_ -match "^error-message=Error: Failed to update $MemberName in team $TeamName with role $Role\. Exception:" } |
+			Should -Not -BeNullOrEmpty
+	}	
 }
