@@ -60,9 +60,9 @@ function Update-TeamMember {
             Add-Content -Path $env:GITHUB_OUTPUT -Value "result=failure"
         }
     } catch {
-        $httpStatus = $_.Exception.Response.StatusCode.value__
-        Write-Host "Error: Failed to update $MemberName in team $TeamName with role $Role. HTTP Status: $httpStatus"
-        Add-Content -Path $env:GITHUB_OUTPUT -Value "error-message=Failed to update member $MemberName in team $TeamName with role $Role. HTTP Status: $httpStatus"
-        Add-Content -Path $env:GITHUB_OUTPUT -Value "result=failure"
+		$errorMsg = "Error: Failed to update $MemberName in team $TeamName with role $Role. Exception: $($_.Exception.Message)"
+		Add-Content -Path $env:GITHUB_OUTPUT -Value "result=failure"
+		Add-Content -Path $env:GITHUB_OUTPUT -Value "error-message=$errorMsg"
+		Write-Host $errorMsg
     }
 }
