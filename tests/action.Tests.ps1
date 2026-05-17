@@ -53,7 +53,7 @@ Describe "Update-TeamMember" {
 			
 	        $output = Get-Content $env:GITHUB_OUTPUT
 	        $output | Should -Contain "result=failure"
-	        $output | Should -Contain "error-message=Error: Failed to update member test-user in team test-team with role member. HTTP Status: 404"
+	        $output | Should -Contain "error-message=Error: Failed to update member $MemberName in team $TeamName with role $Role\. HTTP Status: 404"
 	    }
 	}
 
