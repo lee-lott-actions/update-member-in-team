@@ -24,13 +24,12 @@ function Update-TeamMember {
 
     # Validate role
     if ($Role -ne "member" -and $Role -ne "maintainer") {
-        Write-Output "Error: Invalid role '$Role'. Must be 'member' or 'maintainer'."
-        Add-Content -Path $env:GITHUB_OUTPUT -Value "error-message=Invalid role '$Role'. Must be 'member' or 'maintainer'."
-        Add-Content -Path $env:GITHUB_OUTPUT -Value "result=failure"
+		$errorMsg = "Error: Invalid role '$Role'. Must be 'member' or 'maintainer'."        
+		Add-Content -Path $env:GITHUB_OUTPUT -Value "result=failure"
+        Add-Content -Path $env:GITHUB_OUTPUT -Value "error-message=$errorMsg"
+        Write-Output $errorMsg
         return
-    }
-
-    Write-Host "Attempting to add member '$MemberName' to team '$TeamName' in organization '$Owner' with role '$Role'"
+    }    
 
     # Use MOCK_API if set, otherwise default to GitHub API
     $apiBaseUrl = $env:MOCK_API
@@ -44,19 +43,20 @@ function Update-TeamMember {
         "Content-Type" = "application/json"
     }
 
-    $jsonBody = @{ role = $Role } | ConvertTo-Json
+    $body = @{ role = $Role } | ConvertTo-Json
 
     try {
-        Write-Host "Sending request to $uri"
-        $response = Invoke-WebRequest -Uri $uri -Headers $headers -Method Put -Body $jsonBody
+        Write-Host "Attempting to add member '$MemberName' to team '$TeamName' in organization '$Owner' with role '$Role'"
+        $response = Invoke-WebRequest -Uri $uri -Headers $headers -Method Put -Body $body -SkipHttpErrorCheck
 
         if ($response.StatusCode -eq 200) {
             Write-Host "Successfully updated $MemberName in team $TeamName with role $Role"
             Add-Content -Path $env:GITHUB_OUTPUT -Value "result=success"
         } else {
-            Write-Host "Error: Failed to update $MemberName in team $TeamName with role $Role. HTTP Status: $($response.StatusCode)"
-            Add-Content -Path $env:GITHUB_OUTPUT -Value "error-message=Failed to update member $MemberName in team $TeamName with role $Role. HTTP Status: $($response.StatusCode)"
+			$errorMsg ="Error: Failed to update $MemberName in team $TeamName with role $Role. HTTP Status: $($response.StatusCode)" 
             Add-Content -Path $env:GITHUB_OUTPUT -Value "result=failure"
+            Add-Content -Path $env:GITHUB_OUTPUT -Value "error-message=$errorMsg"
+			Write-Host $errorMsg
         }
     } catch {
 		$errorMsg = "Error: Failed to update $MemberName in team $TeamName with role $Role. Exception: $($_.Exception.Message)"
