@@ -53,7 +53,7 @@ Describe "Update-TeamMember" {
 			
 	        $output = Get-Content $env:GITHUB_OUTPUT
 	        $output | Should -Contain "result=failure"
-	        $output | Should -Contain "error-message=Error: Failed to update member $MemberName in team $TeamName with role $Role\. HTTP Status: 404"
+	        $output | Should -Contain "error-message=Error: Failed to update $MemberName in team $TeamName with role $Role\. HTTP Status: 404"
 	    }
 	}
 
@@ -72,7 +72,7 @@ Describe "Update-TeamMember" {
 	        $output | Should -Contain "error-message=Missing required parameters: MemberName, TeamName, Role, Token, and Owner must be provided."
 	    }
 	
-	    It unit: Update-TeamMember "fails with empty TeamName" {
+	    It "unit: Update-TeamMember fails with empty TeamName" {
 	        Update-TeamMember -MemberName $MemberName -TeamName "" -Role $Role -Token $Token -Owner $Owner
 	        $output = Get-Content $env:GITHUB_OUTPUT
 	        $output | Should -Contain "result=failure"
