@@ -58,13 +58,6 @@ Describe "Update-TeamMember" {
 	}
 
 	Context "Parameter Validation Failure Cases" {
-	    It "unit: Update-TeamMember fails with invalid role" {
-	        Update-TeamMember -MemberName $MemberName -TeamName $TeamName -Role "invalid-role" -Token $Token -Owner $Owner
-	        $output = Get-Content $env:GITHUB_OUTPUT
-	        $output | Should -Contain "result=failure"
-	        $output | Should -Contain "error-message=Error: Invalid role 'invalid-role'. Must be 'member' or 'maintainer'."
-	    }
-	
 	    It "unit: Update-TeamMember fails with empty MemberName" {
 	        Update-TeamMember -MemberName "" -TeamName $TeamName -Role $Role -Token $Token -Owner $Owner
 	        $output = Get-Content $env:GITHUB_OUTPUT
@@ -79,12 +72,17 @@ Describe "Update-TeamMember" {
 	        $output | Should -Contain "error-message=Missing required parameters: MemberName, TeamName, Role, Token, and Owner must be provided."
 	    }
 	
-	    It "unit: Update-TeamMember fails with empty Role" {
-	        Update-TeamMember -MemberName $MemberName -TeamName $TeamName -Role "" -Token $Token -Owner $Owner
-	        $output = Get-Content $env:GITHUB_OUTPUT
-	        $output | Should -Contain "result=failure"
-	        $output | Should -Contain "error-message=Missing required parameters: MemberName, TeamName, Role, Token, and Owner must be provided."
-	    }
+        It "unit: Update-TeamMember throws exception if Role is empty" {
+            { 
+				Update-TeamMember -MemberName $MemberName -TeamName $TeamName -Role "" -Token $Token -Owner $Owner
+            } | Should -Throw
+        }
+
+        It "unit: Update-TeamMember throws exception if Role is not valid" {
+            { 
+				Update-TeamMember -MemberName $MemberName -TeamName $TeamName -Role "invalid-role" -Token $Token -Owner $Owner
+            } | Should -Throw
+        }		
 	
 	    It "unit: Update-TeamMember fails with empty Token" {
 	        Update-TeamMember -MemberName $MemberName -TeamName $TeamName -Role $Role -Token "" -Owner $Owner

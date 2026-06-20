@@ -2,6 +2,7 @@ function Update-TeamMember {
     param(
         [string]$MemberName,
         [string]$TeamName,
+		[ValidateSet("member", "maintainer")]
         [string]$Role,
         [string]$Token,
         [string]$Owner
@@ -21,15 +22,6 @@ function Update-TeamMember {
 
     # Convert Role to lowercase for API compatibility
     $Role = $Role.ToLower()
-
-    # Validate role
-    if ($Role -ne "member" -and $Role -ne "maintainer") {
-		$errorMsg = "Error: Invalid role '$Role'. Must be 'member' or 'maintainer'."        
-		Add-Content -Path $env:GITHUB_OUTPUT -Value "result=failure"
-        Add-Content -Path $env:GITHUB_OUTPUT -Value "error-message=$errorMsg"
-        Write-Output $errorMsg
-        return
-    }    
 
     # Use MOCK_API if set, otherwise default to GitHub API
     $apiBaseUrl = $env:MOCK_API
